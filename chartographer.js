@@ -4,6 +4,12 @@ Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
 */
 
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var Chartographer;
 (function (Chartographer) {
     var nameKey = "_chartographer_name";
@@ -13,8 +19,8 @@ var Chartographer;
         return new Plottable.Dataset(data, metadata);
     }
     var validTypes = ["linear", "log", "ordinal", "time"];
-    var camelCase = function (s) { return s[0].toUpperCase + s.substring(1); };
-    var type2axis = { linear: "Numeric", log: "Numeric", ordinal: "Category", time: "Time" };
+    var camelCase = function (s) { return s[0].toUpperCase() + s.substring(1); };
+    var type2axis = { linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time" };
     var Chart = (function () {
         function Chart(datasets, spec) {
             this._xAccessor = "x";
@@ -23,7 +29,7 @@ var Chartographer;
             this.isNewStylePlot = false;
             if (datasets instanceof Array)
                 datasets = { "": datasets };
-            this.datasets = d3.entries(datasets).map(function (kv) { return dataset(kv[0], kv[1]); });
+            this.datasets = d3.entries(datasets).map(function (kv) { return dataset(kv.key, kv.value); });
         }
         Chart.prototype._project = function (attr, accessor, scale) {
             if (attr === "color")
@@ -51,6 +57,8 @@ var Chartographer;
                 throw new Error("Can't use time as y-type");
             if (validTypes.indexOf(t) === -1)
                 throw new Error("Unrecognized type" + t);
+            if (t === "log")
+                t = "modifiedLog";
             return t;
         };
         Chart.prototype.xType = function (t) {
@@ -69,6 +77,18 @@ var Chartographer;
             this._yAccessor = accessor;
             return this;
         };
+        Chart.prototype.titleLabel = function (label) {
+            this._titleLabel = label;
+            return this;
+        };
+        Chart.prototype.xLabel = function (label) {
+            this._xLabel = label;
+            return this;
+        };
+        Chart.prototype.yLabel = function (label) {
+            this._yLabel = label;
+            return this;
+        };
         Chart.prototype.deduceType = function (accessor, dataset) {
             var data = dataset.data();
             var a = typeof (accessor) === "string" ? function (x) { return x[accessor]; } : accessor;
@@ -84,8 +104,8 @@ var Chartographer;
             throw new Error("Unrecognized data type");
         };
         Chart.prototype._setup = function () {
-            this._xType || (this._xType = this.deduceType(this.xAccessor, this.datasets[0]));
-            this._yType || (this._yType = this.deduceType(this.yAccessor, this.datasets[0]));
+            this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
+            this._yType || (this._yType = this.deduceType(this._yAccessor, this.datasets[0]));
             var xScale = new Plottable.Scale[camelCase(this._xType)]();
             var yScale = new Plottable.Scale[camelCase(this._yType)]();
             var colorScale = new Plottable.Scale.Color();
@@ -104,6 +124,7 @@ var Chartographer;
                 [yAxis, center],
                 [null, xAxis]
             ]);
+            table.classed("chartographer", true);
             return table;
         };
         Chart.prototype.renderTo = function (svg) {
@@ -112,11 +133,41 @@ var Chartographer;
         return Chart;
     })();
     Chartographer.Chart = Chart;
-    var LineChart = (function () {
+    var LineChart = (function (_super) {
+        __extends(LineChart, _super);
         function LineChart() {
+            _super.apply(this, arguments);
             this.plotType = "Line";
         }
         return LineChart;
-    })();
+    })(Chart);
     Chartographer.LineChart = LineChart;
+    var ScatterChart = (function (_super) {
+        __extends(ScatterChart, _super);
+        function ScatterChart() {
+            _super.apply(this, arguments);
+            this.plotType = "Scatter";
+        }
+        return ScatterChart;
+    })(Chart);
+    Chartographer.ScatterChart = ScatterChart;
+    var BarChart = (function (_super) {
+        __extends(BarChart, _super);
+        function BarChart() {
+            _super.apply(this, arguments);
+            this.plotType = "ClusteredBar";
+            this.isNewStylePlot = true;
+        }
+        return BarChart;
+    })(Chart);
+    Chartographer.BarChart = BarChart;
+    var StackedBarChart = (function (_super) {
+        __extends(StackedBarChart, _super);
+        function StackedBarChart() {
+            _super.apply(this, arguments);
+            this.plotType = "StackedBar";
+        }
+        return StackedBarChart;
+    })(BarChart);
+    Chartographer.StackedBarChart = StackedBarChart;
 })(Chartographer || (Chartographer = {}));

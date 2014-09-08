@@ -6,8 +6,8 @@ module Chartographer {
     return new Plottable.Dataset(data, metadata);
   }
   var validTypes = ["linear", "log", "ordinal", "time"];
-  var camelCase = (s: string) => s[0].toUpperCase + s.substring(1);
-  var type2axis = {linear: "Numeric", log: "Numeric", ordinal: "Category", time: "Time"};
+  var camelCase = (s: string) => s[0].toUpperCase() + s.substring(1);
+  var type2axis = {linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time"};
 
   export class Chart {
     private _xType: string; // "Linear", "Log", "Ordinal", "Time"
@@ -19,9 +19,9 @@ module Chartographer {
     private plots: Plottable.Abstract.XYPlot<any,any>[];
     private plot: Plottable.Abstract.NewStylePlot<any,any>;
 
-    private xLabel: string;
-    private yLabel: string;
-    private titleLabel: string;
+    private _xLabel: string;
+    private _yLabel: string;
+    private _titleLabel: string;
 
     public colorVar = "fill";
 
@@ -30,7 +30,7 @@ module Chartographer {
 
     constructor(datasets: any, spec: any) {
       if (datasets instanceof Array) datasets = {"": datasets};
-      this.datasets = d3.entries(datasets).map((kv) => dataset(kv[0], kv[1]));
+      this.datasets = d3.entries(datasets).map((kv) => dataset(kv.key, kv.value));
     }
 
     public _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any,any>) {
@@ -55,6 +55,7 @@ module Chartographer {
       t = t.toLowerCase();
       if (t === "time" && !isX) throw new Error("Can't use time as y-type");
       if (validTypes.indexOf(t) === -1) throw new Error("Unrecognized type" + t);
+      if (t === "log") t = "modifiedLog";
       return t;
     }
 
@@ -63,6 +64,9 @@ module Chartographer {
 
     public xAccessor(accessor: any) {this._xAccessor = accessor; return this;}
     public yAccessor(accessor: any) {this._yAccessor = accessor; return this;}
+    public titleLabel(label: string) {this._titleLabel = label; return this;}
+    public xLabel(label: string) {this._xLabel = label; return this;}
+    public yLabel(label: string) {this._yLabel = label; return this;}
 
     private deduceType(accessor: any, dataset: Plottable.Dataset) {
       var data = dataset.data();
@@ -77,8 +81,8 @@ module Chartographer {
     }
 
     public _setup(): Plottable.Component.Table {
-      this._xType || (this._xType = this.deduceType(this.xAccessor, this.datasets[0]));
-      this._yType || (this._yType = this.deduceType(this.yAccessor, this.datasets[0]));
+      this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
+      this._yType || (this._yType = this.deduceType(this._yAccessor, this.datasets[0]));
       var xScale = new Plottable.Scale[camelCase(this._xType)]();
       var yScale = new Plottable.Scale[camelCase(this._yType)]();
       var colorScale = new Plottable.Scale.Color();
@@ -97,13 +101,27 @@ module Chartographer {
         [yAxis, center],
         [null, xAxis]
       ]);
+      table.classed("chartographer", true);
       return table;
     }
 
     public renderTo(svg: any) {this._setup().renderTo(svg);}
   }
 
-  export class LineChart {
+  export class LineChart extends Chart {
     public plotType = "Line";
+  }
+
+  export class ScatterChart extends Chart {
+    public plotType = "Scatter";
+  }
+
+  export class BarChart extends Chart {
+    public plotType = "ClusteredBar";
+    public isNewStylePlot = true;
+  }
+
+  export class StackedBarChart extends BarChart {
+    public plotType = "StackedBar";
   }
 }
