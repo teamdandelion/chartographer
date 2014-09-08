@@ -1,0 +1,44 @@
+
+<html>
+  <head>
+    <title>Line Quicktest</title>
+    <link rel="stylesheet" type="text/css" href="../bower_components/plottable/plottable.css">
+    <style>
+      div {
+        padding: 20px;
+      }
+    </style>
+    <script src="../bower_components/d3/d3.js" charset="utf-8"></script>
+    <script src="../bower_components/plottable/plottable.js"></script>
+    <script src="../chartographer.js"></script>
+
+    <script>
+      function makeRandomData(numPoints, scaleFactor) {
+        "use strict";
+        if (typeof scaleFactor === "undefined") { scaleFactor = 1; }
+        var data = [];
+        for (var i = 0; i < numPoints; i++) {
+          var x = Math.random();
+          var r = { x: x, y: (x + x * Math.random()) * scaleFactor };
+          data.push(r);
+        }
+        data.sort(function (a, b) {
+          return a.x - b.x;
+        });
+        return data;
+      }
+      window.onload = function() {
+        var data = makeRandomData(50);
+        new Chartographer.LineChart(data).renderTo("#line1");
+        var hugeData = makeRandomData(50, 100000);
+        new Chartographer.LineChart(hugeData).xType("log").renderTo("#line2");
+      }
+  </script>
+  </head>
+
+  <body>
+    <svg id="line1" width="80%" height="500px"></svg>
+    <svg id="line2" width="80%" height="500px"></svg>
+  </body>
+
+</html>
