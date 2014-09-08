@@ -45,6 +45,13 @@ module.exports = function(grunt) {
         dest: "chartographer.js",
       }
     },
+    sed: {
+      version_number: {
+        pattern: "@VERSION",
+        replacement: "<%= pkg.version %>",
+        path: "chartographer.js"
+      }
+    },
     ts: tsJSON,
     tslint: {
       options: {
@@ -115,6 +122,7 @@ module.exports = function(grunt) {
     return [
       release ? "ts:dev_release" : "ts:dev",
       "concat:header",
+      "sed",
       "clean:tscommand"
     ];
   }

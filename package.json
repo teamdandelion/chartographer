@@ -1,15 +1,12 @@
 {
-  "name": "plottable.js",
-  "version": "0.28.0",
-  "description": "Build flexible, performant, interactive charts using D3",
+  "name": "chartographer.js",
+  "version": "0.0.0",
+  "description": "A library of simple charts made with Plottable and D3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/palantir/plottable.git"
+    "url": "https://github.com/palantir/chartographer.git"
   },
-  "author": "Palantir Technologies",
-  "scripts": {
-    "test": "grunt test-travis"
-  },
+  "author": "Dan Mané @ Palantir Technologies",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-cli": "0.1.6",
@@ -22,6 +19,7 @@
     "grunt-contrib-connect": "~0.6.0",
     "grunt-blanket-mocha": "~0.4.0",
     "typescript": "1.0.1",
+    "grunt-sed": "~0.1.1",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-bump": "0.0.13",
     "grunt-contrib-compress": "~0.9.1",

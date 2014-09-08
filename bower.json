@@ -1,7 +1,7 @@
 {
   "name": "chartographer",
   "description": "A library of simple charts made with Plottable and D3",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": ["chartographer.js"],
   "license": "MIT",
   "ignore": [
