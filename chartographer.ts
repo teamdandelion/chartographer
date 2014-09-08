@@ -1,10 +1,6 @@
 module Chartographer {
   var nameKey = "_chartographer_name";
-  function dataset(key: string, data: any[]) {
-    var metadata = {};
-    metadata[nameKey] = key;
-    return new Plottable.Dataset(data, metadata);
-  }
+  var dataset = (key: string, data: any[]) => new Plottable.Dataset(data, {"_chartographer_name": key});
   var validTypes = ["linear", "log", "ordinal", "time"];
   var camelCase = (s: string) => s[0].toUpperCase() + s.substring(1);
   var type2axis = {linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time"};
@@ -18,13 +14,10 @@ module Chartographer {
 
     private plots: Plottable.Abstract.XYPlot<any,any>[];
     private plot: Plottable.Abstract.NewStylePlot<any,any>;
-
     private _xLabel: string;
     private _yLabel: string;
     private _titleLabel: string;
-
     public colorVar = "fill";
-
     public isNewStylePlot = false;
     public plotType: string;
 
@@ -33,8 +26,16 @@ module Chartographer {
       this.datasets = d3.entries(datasets).map((kv) => dataset(kv.key, kv.value));
     }
 
+    public xType(t: string) {this._xType = this.setType(t, true);  return this;}
+    public yType(t: string) {this._yType = this.setType(t, false); return this;}
+    public xAccessor(accessor: any) {this._xAccessor = accessor; return this;}
+    public yAccessor(accessor: any) {this._yAccessor = accessor; return this;}
+    public titleLabel(label: string) {this._titleLabel = label; return this;}
+    public xLabel(label: string) {this._xLabel = label; return this;}
+    public yLabel(label: string) {this._yLabel = label; return this;}
+    public renderTo(svg: any) {this._setup().renderTo(svg);}
+
     public _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any,any>) {
-      if (attr === "color") attr = this.colorVar;
       if (this.isNewStylePlot) {
         this.plot.project(attr, accessor, scale);
       } else {
@@ -59,15 +60,6 @@ module Chartographer {
       return t;
     }
 
-    public xType(t: string) {this._xType = this.setType(t, true);  return this;}
-    public yType(t: string) {this._yType = this.setType(t, false); return this;}
-
-    public xAccessor(accessor: any) {this._xAccessor = accessor; return this;}
-    public yAccessor(accessor: any) {this._yAccessor = accessor; return this;}
-    public titleLabel(label: string) {this._titleLabel = label; return this;}
-    public xLabel(label: string) {this._xLabel = label; return this;}
-    public yLabel(label: string) {this._yLabel = label; return this;}
-
     private deduceType(accessor: any, dataset: Plottable.Dataset) {
       var data = dataset.data();
       var a = typeof(accessor) === "string" ? (x) => x[accessor] : accessor;
@@ -91,7 +83,7 @@ module Chartographer {
       this._generatePlots(xScale, yScale);
       this._project("x", this._xAccessor, xScale);
       this._project("y", this._yAccessor, yScale);
-      this._project("color", (d,i,m) => m[nameKey]);
+      this._project(this.colorVar, (d,i,m) => m[nameKey], colorScale);
       var center: any = this.plot || new Plottable.Component.Group(this.plots);
       center.merge(gridlines);
       var xAxis = new Plottable.Axis[type2axis[this._xType]](xScale, "bottom");
@@ -105,11 +97,11 @@ module Chartographer {
       return table;
     }
 
-    public renderTo(svg: any) {this._setup().renderTo(svg);}
   }
 
   export class LineChart extends Chart {
     public plotType = "Line";
+    public colorVar = "stroke";
   }
 
   export class ScatterChart extends Chart {

@@ -13,11 +13,7 @@ var __extends = this.__extends || function (d, b) {
 var Chartographer;
 (function (Chartographer) {
     var nameKey = "_chartographer_name";
-    function dataset(key, data) {
-        var metadata = {};
-        metadata[nameKey] = key;
-        return new Plottable.Dataset(data, metadata);
-    }
+    var dataset = function (key, data) { return new Plottable.Dataset(data, { "_chartographer_name": key }); };
     var validTypes = ["linear", "log", "ordinal", "time"];
     var camelCase = function (s) { return s[0].toUpperCase() + s.substring(1); };
     var type2axis = { linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time" };
@@ -31,36 +27,6 @@ var Chartographer;
                 datasets = { "": datasets };
             this.datasets = d3.entries(datasets).map(function (kv) { return dataset(kv.key, kv.value); });
         }
-        Chart.prototype._project = function (attr, accessor, scale) {
-            if (attr === "color")
-                attr = this.colorVar;
-            if (this.isNewStylePlot) {
-                this.plot.project(attr, accessor, scale);
-            }
-            else {
-                this.plots.forEach(function (p) { return p.project(attr, accessor, scale); });
-            }
-        };
-        Chart.prototype._generatePlots = function (x, y) {
-            var _this = this;
-            if (this.isNewStylePlot) {
-                this.plot = new Plottable.Plot[this.plotType](x, y);
-                this.datasets.forEach(function (d) { return _this.plot.addDataset(d.metadata().nameKey, d); });
-            }
-            else {
-                this.plots = this.datasets.map(function (d) { return new Plottable.Plot[_this.plotType](d, x, y); });
-            }
-        };
-        Chart.prototype.setType = function (t, isX) {
-            t = t.toLowerCase();
-            if (t === "time" && !isX)
-                throw new Error("Can't use time as y-type");
-            if (validTypes.indexOf(t) === -1)
-                throw new Error("Unrecognized type" + t);
-            if (t === "log")
-                t = "modifiedLog";
-            return t;
-        };
         Chart.prototype.xType = function (t) {
             this._xType = this.setType(t, true);
             return this;
@@ -89,6 +55,37 @@ var Chartographer;
             this._yLabel = label;
             return this;
         };
+        Chart.prototype.renderTo = function (svg) {
+            this._setup().renderTo(svg);
+        };
+        Chart.prototype._project = function (attr, accessor, scale) {
+            if (this.isNewStylePlot) {
+                this.plot.project(attr, accessor, scale);
+            }
+            else {
+                this.plots.forEach(function (p) { return p.project(attr, accessor, scale); });
+            }
+        };
+        Chart.prototype._generatePlots = function (x, y) {
+            var _this = this;
+            if (this.isNewStylePlot) {
+                this.plot = new Plottable.Plot[this.plotType](x, y);
+                this.datasets.forEach(function (d) { return _this.plot.addDataset(d.metadata().nameKey, d); });
+            }
+            else {
+                this.plots = this.datasets.map(function (d) { return new Plottable.Plot[_this.plotType](d, x, y); });
+            }
+        };
+        Chart.prototype.setType = function (t, isX) {
+            t = t.toLowerCase();
+            if (t === "time" && !isX)
+                throw new Error("Can't use time as y-type");
+            if (validTypes.indexOf(t) === -1)
+                throw new Error("Unrecognized type" + t);
+            if (t === "log")
+                t = "modifiedLog";
+            return t;
+        };
         Chart.prototype.deduceType = function (accessor, dataset) {
             var data = dataset.data();
             var a = typeof (accessor) === "string" ? function (x) { return x[accessor]; } : accessor;
@@ -114,7 +111,7 @@ var Chartographer;
             this._generatePlots(xScale, yScale);
             this._project("x", this._xAccessor, xScale);
             this._project("y", this._yAccessor, yScale);
-            this._project("color", function (d, i, m) { return m[nameKey]; });
+            this._project(this.colorVar, function (d, i, m) { return m[nameKey]; }, colorScale);
             var center = this.plot || new Plottable.Component.Group(this.plots);
             center.merge(gridlines);
             var xAxis = new Plottable.Axis[type2axis[this._xType]](xScale, "bottom");
@@ -127,9 +124,6 @@ var Chartographer;
             table.classed("chartographer", true);
             return table;
         };
-        Chart.prototype.renderTo = function (svg) {
-            this._setup().renderTo(svg);
-        };
         return Chart;
     })();
     Chartographer.Chart = Chart;
@@ -138,6 +132,7 @@ var Chartographer;
         function LineChart() {
             _super.apply(this, arguments);
             this.plotType = "Line";
+            this.colorVar = "stroke";
         }
         return LineChart;
     })(Chart);

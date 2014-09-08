@@ -14,9 +14,6 @@ declare module Chartographer {
         isNewStylePlot: boolean;
         plotType: string;
         constructor(datasets: any, spec: any);
-        _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any, any>): void;
-        _generatePlots(x: Plottable.Abstract.Scale<any, number>, y: Plottable.Abstract.Scale<any, number>): void;
-        private setType(t, isX);
         xType(t: string): Chart;
         yType(t: string): Chart;
         xAccessor(accessor: any): Chart;
@@ -24,12 +21,16 @@ declare module Chartographer {
         titleLabel(label: string): Chart;
         xLabel(label: string): Chart;
         yLabel(label: string): Chart;
+        renderTo(svg: any): void;
+        _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any, any>): void;
+        _generatePlots(x: Plottable.Abstract.Scale<any, number>, y: Plottable.Abstract.Scale<any, number>): void;
+        private setType(t, isX);
         private deduceType(accessor, dataset);
         _setup(): Plottable.Component.Table;
-        renderTo(svg: any): void;
     }
     class LineChart extends Chart {
         plotType: string;
+        colorVar: string;
     }
     class ScatterChart extends Chart {
         plotType: string;
