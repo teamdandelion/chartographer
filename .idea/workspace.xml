@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df61c843-6c18-4c77-803d-105a1c661ed4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/chartographer.iml" afterPath="$PROJECT_DIR$/.idea/chartographer.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chartographer.ts" afterPath="$PROJECT_DIR$/chartographer.ts" />
     </list>
     <ignored path="chartographer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="chartographer.ts" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chartographer.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.28649387" vertical-offset="0" max-vertical-offset="765">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7823219" vertical-offset="232" max-vertical-offset="990">
+              <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -184,8 +183,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/chartographer.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28649387" vertical-offset="0" max-vertical-offset="765">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7823219" vertical-offset="232" max-vertical-offset="990">
+          <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
           <folding />
         </state>
       </provider>
