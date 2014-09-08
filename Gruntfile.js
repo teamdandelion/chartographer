@@ -6,11 +6,11 @@ module.exports = function(grunt) {
 
   var tsJSON = {
     dev: {
-      src: ["*.ts", "typings/**/*.d.ts", "bower_components/plottable/plottable.d.ts"],
+      src: ["chartographer.ts", "typings/d3/d3.d.ts", "bower_components/plottable/plottable.d.ts"],
       outDir: ".",
       options: {
         target: 'es5',
-        noImplicitAny: true,
+        noImplicitAny: false,
         sourceMap: false,
         declaration: true,
         compiler: "./node_modules/grunt-ts/customcompiler/tsc",
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
     },
     watch: {
       "options": {
-        livereload: true
+        livereload: 35731
       },
       "rebuild": {
         "tasks": ["dev-compile"],
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
           port: 9998,
           hostname: "*",
           base: "",
-          livereload: true
+          livereload: 35731
         }
       }
     },
