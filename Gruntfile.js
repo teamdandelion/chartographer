@@ -88,7 +88,7 @@ module.exports = function(grunt) {
       },
       "rebuild": {
         "tasks": ["dev-compile"],
-        "files": ["*.ts"]
+        "files": ["chartographer.ts"]
       }
     },
     connect: {
