@@ -107,7 +107,7 @@ var Chartographer;
             var yScale = new Plottable.Scale[camelCase(this._yType)]();
             var colorScale = new Plottable.Scale.Color();
             var gridlines = new Plottable.Component.Gridlines(xScale, yScale);
-            var legend = new Plottable.Component.HorizontalLegend(colorScale);
+            var legend = this.datasets.length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
             this._generatePlots(xScale, yScale);
             this._project("x", this._xAccessor, xScale);
             this._project("y", this._yAccessor, yScale);
@@ -116,10 +116,15 @@ var Chartographer;
             center.merge(gridlines);
             var xAxis = new Plottable.Axis[type2axis[this._xType]](xScale, "bottom");
             var yAxis = new Plottable.Axis[type2axis[this._yType]](yScale, "left");
+            var titleLabel = this._titleLabel ? new Plottable.Component.TitleLabel(this._titleLabel) : null;
+            var xLabel = this._xLabel ? new Plottable.Component.AxisLabel(this._xLabel) : null;
+            var yLabel = this._yLabel ? new Plottable.Component.AxisLabel(this._yLabel, "left") : null;
             var table = new Plottable.Component.Table([
-                [null, legend],
-                [yAxis, center],
-                [null, xAxis]
+                [null, null, titleLabel],
+                [null, null, legend],
+                [yLabel, yAxis, center],
+                [null, null, xAxis],
+                [null, null, xLabel]
             ]);
             table.classed("chartographer", true);
             return table;

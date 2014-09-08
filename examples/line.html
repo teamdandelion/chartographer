@@ -28,17 +28,27 @@
         return data;
       }
       window.onload = function() {
-        var data = makeRandomData(50);
-        new Chartographer.LineChart(data).renderTo("#line1");
-        var hugeData = makeRandomData(50, 100000);
-        new Chartographer.LineChart(hugeData).xType("log").renderTo("#line2");
+var data = makeRandomData(50);
+new Chartographer.LineChart(data).titleLabel("foo chart").xLabel("foo").yLabel("bar").renderTo("#line1");
+var hugeData = makeRandomData(50, 100000);
+new Chartographer.LineChart(hugeData).titleLabel("foo chart").xLabel("foo").yLabel("bar").xType("log").renderTo("#line2");
+var multiData = {
+  foo: makeRandomData(50),
+  bar: makeRandomData(50, 1.5),
+  baz: makeRandomData(50, 2)
+};
+new Chartographer.LineChart(multiData).titleLabel("multi chart").xLabel("foo").yLabel("bar").renderTo("#line3");
+var strangeData = [{x: "foo", y: 5}, {x: "bar", y:6}, {x: "baz", y:7}, {x: "bar", y:9}];
+new Chartographer.LineChart(strangeData).titleLabel("strange chart").xLabel("foo").yLabel("bar").renderTo("#line4");
       }
   </script>
   </head>
 
   <body>
-    <svg id="line1" width="80%" height="500px"></svg>
-    <svg id="line2" width="80%" height="500px"></svg>
+    <svg id="line1" width="80%" height="200px"></svg>
+    <svg id="line2" width="80%" height="200px"></svg>
+    <svg id="line3" width="80%" height="200px"></svg>
+    <svg id="line4" width="80%" height="200px"></svg>
   </body>
 
 </html>
