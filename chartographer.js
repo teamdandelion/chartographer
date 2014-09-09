@@ -1,5 +1,5 @@
 /*!
-Chartographer 0.0.1 (https://github.com/danmane/chartogrpaher)
+Chartographer 0.0.2 (https://github.com/danmane/chartogrpaher)
 Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
 */
