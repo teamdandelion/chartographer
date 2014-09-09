@@ -2,4 +2,10 @@
 Chartographer @VERSION (https://github.com/danmane/chartogrpaher)
 Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
+
+          ************************************************
+          **          Looking for readable source?      **
+          **    Check out the .ts (typescript) file!    **
+          ************************************************
+
 */

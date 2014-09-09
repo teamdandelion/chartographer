@@ -26,6 +26,7 @@ declare module Chartographer {
         _generatePlots(x: Plottable.Abstract.Scale<any, number>, y: Plottable.Abstract.Scale<any, number>): void;
         private setType(t, isX);
         private deduceType(accessor, dataset);
+        private modifyDataForNewStylePlot();
         _setup(): Plottable.Component.Table;
     }
     class LineChart extends Chart {
@@ -41,5 +42,6 @@ declare module Chartographer {
     }
     class StackedBarChart extends BarChart {
         plotType: string;
+        isNewStylePlot: boolean;
     }
 }

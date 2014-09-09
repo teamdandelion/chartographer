@@ -1,10 +1,16 @@
 module Chartographer {
   var nameKey = "_chartographer_name";
-  var dataset = (key: string, data: any[]) => new Plottable.Dataset(data, {"_chartographer_name": key});
+  var makeDataset = (key: string, data: any[]) => new Plottable.Dataset(data, {"_chartographer_name": key});
   var validTypes = ["linear", "log", "ordinal", "time"];
   var camelCase = (s: string) => s[0].toUpperCase() + s.substring(1);
   var type2axis = {linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time"};
 
+  /*
+   * Plottable is currently undergoing an API shift; new plots (aka "NewStylePlots")
+   * have a more advanced API that accepts multiple datasets, but not all plots are
+   * so enlightened. Until the old plots are converted (should be by end of September),
+   * there is some casing logic to access the old API for old plots.
+   **/
   export class Chart {
     private _xType: string; // "Linear", "Log", "Ordinal", "Time"
     private _yType: string; // "Linear", "Log", "Ordinal"
@@ -23,7 +29,8 @@ module Chartographer {
 
     constructor(datasets: any, spec: any) {
       if (datasets instanceof Array) datasets = {"": datasets};
-      this.datasets = d3.entries(datasets).map((kv) => dataset(kv.key, kv.value));
+      datasets = d3.entries(datasets);
+      this.datasets = datasets.map((kv) => makeDataset(kv.key, kv.value));
     }
 
     public xType(t: string) {this._xType = this.setType(t, true);  return this;}
@@ -72,7 +79,16 @@ module Chartographer {
       throw new Error("Unrecognized data type");
     }
 
+    private modifyDataForNewStylePlot() {
+      // This code will disappear once NewStylePlots are universally supported in Plottable
+      this.datasets.forEach((dataset) => {
+        var key = dataset.metadata()[nameKey];
+        dataset.data().forEach((v) => v[nameKey] = key);
+      });
+    }
+
     public _setup(): Plottable.Component.Table {
+      if (this.isNewStylePlot) this.modifyDataForNewStylePlot();
       this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
       this._yType || (this._yType = this.deduceType(this._yAccessor, this.datasets[0]));
       var xScale = new Plottable.Scale[camelCase(this._xType)]();
@@ -83,7 +99,8 @@ module Chartographer {
       this._generatePlots(xScale, yScale);
       this._project("x", this._xAccessor, xScale);
       this._project("y", this._yAccessor, yScale);
-      this._project(this.colorVar, (d,i,m) => m[nameKey], colorScale);
+      var colorAccessor: any = this.isNewStylePlot ? nameKey : (d,i,m) => m[nameKey];
+      this._project(this.colorVar, colorAccessor, colorScale);
       var center: any = this.plot || new Plottable.Component.Group(this.plots);
       center.merge(gridlines);
       var xAxis = new Plottable.Axis[type2axis[this._xType]](xScale, "bottom");
@@ -120,5 +137,6 @@ module Chartographer {
 
   export class StackedBarChart extends BarChart {
     public plotType = "StackedBar";
+    public isNewStylePlot = true;
   }
 }

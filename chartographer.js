@@ -1,7 +1,13 @@
 /*!
-Chartographer 0.0.2 (https://github.com/danmane/chartogrpaher)
+Chartographer 0.0.3 (https://github.com/danmane/chartogrpaher)
 Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
+
+          ************************************************
+          **          Looking for readable source?      **
+          **    Check out the .ts (typescript) file!    **
+          ************************************************
+
 */
 
 var __extends = this.__extends || function (d, b) {
@@ -13,7 +19,7 @@ var __extends = this.__extends || function (d, b) {
 var Chartographer;
 (function (Chartographer) {
     var nameKey = "_chartographer_name";
-    var dataset = function (key, data) { return new Plottable.Dataset(data, { "_chartographer_name": key }); };
+    var makeDataset = function (key, data) { return new Plottable.Dataset(data, { "_chartographer_name": key }); };
     var validTypes = ["linear", "log", "ordinal", "time"];
     var camelCase = function (s) { return s[0].toUpperCase() + s.substring(1); };
     var type2axis = { linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time" };
@@ -25,7 +31,8 @@ var Chartographer;
             this.isNewStylePlot = false;
             if (datasets instanceof Array)
                 datasets = { "": datasets };
-            this.datasets = d3.entries(datasets).map(function (kv) { return dataset(kv.key, kv.value); });
+            datasets = d3.entries(datasets);
+            this.datasets = datasets.map(function (kv) { return makeDataset(kv.key, kv.value); });
         }
         Chart.prototype.xType = function (t) {
             this._xType = this.setType(t, true);
@@ -100,7 +107,15 @@ var Chartographer;
             console.log(d);
             throw new Error("Unrecognized data type");
         };
+        Chart.prototype.modifyDataForNewStylePlot = function () {
+            this.datasets.forEach(function (dataset) {
+                var key = dataset.metadata()[nameKey];
+                dataset.data().forEach(function (v) { return v[nameKey] = key; });
+            });
+        };
         Chart.prototype._setup = function () {
+            if (this.isNewStylePlot)
+                this.modifyDataForNewStylePlot();
             this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
             this._yType || (this._yType = this.deduceType(this._yAccessor, this.datasets[0]));
             var xScale = new Plottable.Scale[camelCase(this._xType)]();
@@ -111,7 +126,8 @@ var Chartographer;
             this._generatePlots(xScale, yScale);
             this._project("x", this._xAccessor, xScale);
             this._project("y", this._yAccessor, yScale);
-            this._project(this.colorVar, function (d, i, m) { return m[nameKey]; }, colorScale);
+            var colorAccessor = this.isNewStylePlot ? nameKey : function (d, i, m) { return m[nameKey]; };
+            this._project(this.colorVar, colorAccessor, colorScale);
             var center = this.plot || new Plottable.Component.Group(this.plots);
             center.merge(gridlines);
             var xAxis = new Plottable.Axis[type2axis[this._xType]](xScale, "bottom");
@@ -166,6 +182,7 @@ var Chartographer;
         function StackedBarChart() {
             _super.apply(this, arguments);
             this.plotType = "StackedBar";
+            this.isNewStylePlot = true;
         }
         return StackedBarChart;
     })(BarChart);
