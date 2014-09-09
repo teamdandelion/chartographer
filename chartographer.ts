@@ -46,7 +46,7 @@ module Chartographer {
     public _generatePlots(x: Plottable.Abstract.Scale<any,number>, y: Plottable.Abstract.Scale<any,number>) {
       if (this.isNewStylePlot) {
         this.plot = new Plottable.Plot[this.plotType](x, y);
-        this.datasets.forEach((d: Plottable.Dataset) => this.plot.addDataset(d.metadata().nameKey, d));
+        this.datasets.forEach((d: Plottable.Dataset) => this.plot.addDataset(d.metadata()[nameKey], d));
       } else {
         this.plots = this.datasets.map((d: Plottable.Dataset) => new Plottable.Plot[this.plotType](d, x, y));
       }
