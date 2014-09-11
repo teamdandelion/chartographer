@@ -13,11 +13,14 @@ declare module Chartographer {
         colorVar: string;
         isNewStylePlot: boolean;
         plotType: string;
+        private colorRange;
+        private hasDeployed;
         constructor(datasets: any, spec: any);
         xType(t: string): Chart;
         yType(t: string): Chart;
         xAccessor(accessor: any): Chart;
         yAccessor(accessor: any): Chart;
+        colors(colors: string[]): Chart;
         titleLabel(label: string): Chart;
         xLabel(label: string): Chart;
         yLabel(label: string): Chart;
@@ -27,7 +30,7 @@ declare module Chartographer {
         private setType(t, isX);
         private deduceType(accessor, dataset);
         private modifyDataForNewStylePlot();
-        _setup(): Plottable.Component.Table;
+        getComponents(): ChartComponents;
     }
     class LineChart extends Chart {
         plotType: string;

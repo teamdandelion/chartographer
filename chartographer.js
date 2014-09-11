@@ -1,5 +1,5 @@
 /*!
-Chartographer 0.0.3 (https://github.com/danmane/chartogrpaher)
+Chartographer 0.0.4 (https://github.com/danmane/chartogrpaher)
 Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
 
@@ -18,17 +18,13 @@ var __extends = this.__extends || function (d, b) {
 };
 var Chartographer;
 (function (Chartographer) {
-    var nameKey = "_chartographer_name";
-    var makeDataset = function (key, data) { return new Plottable.Dataset(data, { "_chartographer_name": key }); };
-    var validTypes = ["linear", "log", "ordinal", "time"];
-    var camelCase = function (s) { return s[0].toUpperCase() + s.substring(1); };
-    var type2axis = { linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time" };
     var Chart = (function () {
         function Chart(datasets, spec) {
             this._xAccessor = "x";
             this._yAccessor = "y";
             this.colorVar = "fill";
             this.isNewStylePlot = false;
+            this.hasDeployed = false;
             if (datasets instanceof Array)
                 datasets = { "": datasets };
             datasets = d3.entries(datasets);
@@ -50,6 +46,10 @@ var Chartographer;
             this._yAccessor = accessor;
             return this;
         };
+        Chart.prototype.colors = function (colors) {
+            this.colorRange = colors;
+            return this;
+        };
         Chart.prototype.titleLabel = function (label) {
             this._titleLabel = label;
             return this;
@@ -63,7 +63,7 @@ var Chartographer;
             return this;
         };
         Chart.prototype.renderTo = function (svg) {
-            this._setup().renderTo(svg);
+            this.getComponents().table.renderTo(svg);
         };
         Chart.prototype._project = function (attr, accessor, scale) {
             if (this.isNewStylePlot) {
@@ -103,7 +103,7 @@ var Chartographer;
                 return "linear";
             if (typeof (d) === "string")
                 return "ordinal";
-            console.log("Data type couldn't be deduced; see example");
+            console.log("Data type couldn't be deduced; here's an example");
             console.log(d);
             throw new Error("Unrecognized data type");
         };
@@ -113,7 +113,7 @@ var Chartographer;
                 dataset.data().forEach(function (v) { return v[nameKey] = key; });
             });
         };
-        Chart.prototype._setup = function () {
+        Chart.prototype.getComponents = function () {
             if (this.isNewStylePlot)
                 this.modifyDataForNewStylePlot();
             this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
@@ -121,8 +121,10 @@ var Chartographer;
             var xScale = new Plottable.Scale[camelCase(this._xType)]();
             var yScale = new Plottable.Scale[camelCase(this._yType)]();
             var colorScale = new Plottable.Scale.Color();
+            if (this.colorRange)
+                colorScale.range(this.colorRange);
             var gridlines = new Plottable.Component.Gridlines(xScale, yScale);
-            var legend = this.datasets.length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
+            var legend = colorScale.domain().length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
             this._generatePlots(xScale, yScale);
             this._project("x", this._xAccessor, xScale);
             this._project("y", this._yAccessor, yScale);
@@ -143,7 +145,23 @@ var Chartographer;
                 [null, null, xLabel]
             ]);
             table.classed("chartographer", true);
-            return table;
+            var chartComponents = {
+                xScale: xScale,
+                yScale: yScale,
+                colorScale: colorScale,
+                gridlines: gridlines,
+                legend: legend,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                center: center,
+                plot: this.plot,
+                plots: this.plots,
+                titleLabel: titleLabel,
+                xLabel: xLabel,
+                yLabel: yLabel,
+                table: table
+            };
+            return chartComponents;
         };
         return Chart;
     })();
@@ -187,4 +205,9 @@ var Chartographer;
         return StackedBarChart;
     })(BarChart);
     Chartographer.StackedBarChart = StackedBarChart;
+    var nameKey = "_chartographer_name";
+    var makeDataset = function (key, data) { return new Plottable.Dataset(data, { "_chartographer_name": key }); };
+    var validTypes = ["linear", "log", "ordinal", "time"];
+    var camelCase = function (s) { return s[0].toUpperCase() + s.substring(1); };
+    var type2axis = { linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time" };
 })(Chartographer || (Chartographer = {}));

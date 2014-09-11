@@ -1,16 +1,26 @@
 module Chartographer {
-  var nameKey = "_chartographer_name";
-  var makeDataset = (key: string, data: any[]) => new Plottable.Dataset(data, {"_chartographer_name": key});
-  var validTypes = ["linear", "log", "ordinal", "time"];
-  var camelCase = (s: string) => s[0].toUpperCase() + s.substring(1);
-  var type2axis = {linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time"};
-
   /*
    * Plottable is currently undergoing an API shift; new plots (aka "NewStylePlots")
    * have a more advanced API that accepts multiple datasets, but not all plots are
    * so enlightened. Until the old plots are converted (should be by end of September),
    * there is some casing logic to access the old API for old plots.
    **/
+
+  interface ChartComponents {
+    xScale: Plottable.Abstract.Scale<any, any>;
+    yScale: Plottable.Abstract.Scale<any, any>;
+    colorScale: Plottable.Abstract.Scale<any, string>;
+    xAxis: Plottable.Abstract.Axis;
+    yAxis: Plottable.Abstract.Axis;
+    xLabel?: Plottable.Component.AxisLabel;
+    yLabel?: Plottable.Component.AxisLabel;
+    titleLabel?: Plottable.Component.TitleLabel;
+    legend?: Plottable.Component.HorizontalLegend;
+    plot?: Plottable.Abstract.NewStylePlot<any,any>; // if non NewStylePlot
+    plots?: Plottable.Abstract.Plot[]; // if NewStylePlot
+    table: Plottable.Component.Table;
+  }
+
   export class Chart {
     private _xType: string; // "Linear", "Log", "Ordinal", "Time"
     private _yType: string; // "Linear", "Log", "Ordinal"
@@ -26,6 +36,9 @@ module Chartographer {
     public colorVar = "fill";
     public isNewStylePlot = false;
     public plotType: string;
+    private colorRange: string[];
+    private hasDeployed = false;
+    // Chartographer deploys by rendering, or providing its pieces.
 
     constructor(datasets: any, spec: any) {
       if (datasets instanceof Array) datasets = {"": datasets};
@@ -33,14 +46,20 @@ module Chartographer {
       this.datasets = datasets.map((kv) => makeDataset(kv.key, kv.value));
     }
 
+    /* Manually set the xType for the data: "Linear" || "Log" || "Ordinal" || "Time" */
     public xType(t: string) {this._xType = this.setType(t, true);  return this;}
+    /* Manually set the yType for the data: "Linear" || "Log" || "Ordinal" || "Time" */
     public yType(t: string) {this._yType = this.setType(t, false); return this;}
     public xAccessor(accessor: any) {this._xAccessor = accessor; return this;}
     public yAccessor(accessor: any) {this._yAccessor = accessor; return this;}
+    public colors(colors: string[]) {this.colorRange = colors; return this;}
     public titleLabel(label: string) {this._titleLabel = label; return this;}
     public xLabel(label: string) {this._xLabel = label; return this;}
     public yLabel(label: string) {this._yLabel = label; return this;}
-    public renderTo(svg: any) {this._setup().renderTo(svg);}
+
+    public renderTo(svg: any) {
+      this.getComponents().table.renderTo(svg);
+    }
 
     public _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any,any>) {
       if (this.isNewStylePlot) {
@@ -74,7 +93,7 @@ module Chartographer {
       if (d instanceof Date) return "time";
       if (typeof(d) === "number") return "linear";
       if (typeof(d) === "string") return "ordinal";
-      console.log("Data type couldn't be deduced; see example");
+      console.log("Data type couldn't be deduced; here's an example");
       console.log(d);
       throw new Error("Unrecognized data type");
     }
@@ -87,15 +106,16 @@ module Chartographer {
       });
     }
 
-    public _setup(): Plottable.Component.Table {
+    public getComponents(): ChartComponents {
       if (this.isNewStylePlot) this.modifyDataForNewStylePlot();
       this._xType || (this._xType = this.deduceType(this._xAccessor, this.datasets[0]));
       this._yType || (this._yType = this.deduceType(this._yAccessor, this.datasets[0]));
       var xScale = new Plottable.Scale[camelCase(this._xType)]();
       var yScale = new Plottable.Scale[camelCase(this._yType)]();
       var colorScale = new Plottable.Scale.Color();
+      if (this.colorRange) colorScale.range(this.colorRange);
       var gridlines = new Plottable.Component.Gridlines(xScale, yScale);
-      var legend = this.datasets.length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
+      var legend = colorScale.domain().length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
       this._generatePlots(xScale, yScale);
       this._project("x", this._xAccessor, xScale);
       this._project("y", this._yAccessor, yScale);
@@ -116,9 +136,15 @@ module Chartographer {
         [null, null, xLabel]
       ]);
       table.classed("chartographer", true);
-      return table;
+      var chartComponents: ChartComponents = {
+        xScale: xScale, yScale: yScale, colorScale: colorScale,
+        gridlines: gridlines, legend: legend, xAxis: xAxis, yAxis: yAxis,
+        center: center, plot: this.plot, plots: this.plots,
+        titleLabel: titleLabel, xLabel: xLabel, yLabel: yLabel,
+        table: table
+      };
+      return chartComponents;
     }
-
   }
 
   export class LineChart extends Chart {
@@ -139,4 +165,11 @@ module Chartographer {
     public plotType = "StackedBar";
     public isNewStylePlot = true;
   }
+
+  var nameKey = "_chartographer_name";
+  var makeDataset = (key: string, data: any[]) => new Plottable.Dataset(data, {"_chartographer_name": key});
+  var validTypes = ["linear", "log", "ordinal", "time"];
+  var camelCase = (s: string) => s[0].toUpperCase() + s.substring(1);
+  var type2axis = {linear: "Numeric", modifiedLog: "Numeric", ordinal: "Category", time: "Time"};
+
 }
