@@ -30,11 +30,11 @@
     "plots"
   ],
   "dependencies": {
-    "plottable": "0.28.0"
+    "plottable": ">= 0.28.0"
   },
-  "homepage": "http://github.com/danmane/chartographer",
+  "homepage": "http://github.com/palantir/chartographer",
   "repository": {
     "type": "git",
-    "url": "git://github.com/danmane/chartographer.git"
+    "url": "git://github.com/palantir/chartographer.git"
   }
 }
