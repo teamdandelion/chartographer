@@ -25,8 +25,8 @@ declare module Chartographer {
         xLabel(label: string): Chart;
         yLabel(label: string): Chart;
         renderTo(svg: any): void;
-        _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any, any>): void;
-        _generatePlots(x: Plottable.Abstract.Scale<any, number>, y: Plottable.Abstract.Scale<any, number>): void;
+        _project(attr: string, accessor: any, scale?: Plottable.Scale.AbstractScale<any, any>): void;
+        _generatePlots(x: Plottable.Scale.AbstractScale<any, number>, y: Plottable.Scale.AbstractScale<any, number>): void;
         private setType(t, isX);
         private deduceType(accessor, dataset);
         private modifyDataForNewStylePlot();
