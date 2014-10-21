@@ -1,7 +1,7 @@
 {
   "name": "chartographer",
   "description": "A library of simple charts made with Plottable and D3",
-  "version": "0.0.5-preview",
+  "version": "0.0.5",
   "main": ["chartographer.js"],
   "license": "MIT",
   "ignore": [
@@ -30,7 +30,7 @@
     "plots"
   ],
   "dependencies": {
-    "plottable": "0.33.0-preview"
+    "plottable": "0.33.1"
   },
   "homepage": "http://github.com/palantir/chartographer",
   "repository": {
