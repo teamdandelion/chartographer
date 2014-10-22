@@ -7,17 +7,17 @@ module Chartographer {
    **/
 
   interface ChartComponents {
-    xScale: Plottable.Abstract.Scale<any, any>;
-    yScale: Plottable.Abstract.Scale<any, any>;
-    colorScale: Plottable.Abstract.Scale<any, string>;
-    xAxis: Plottable.Abstract.Axis;
-    yAxis: Plottable.Abstract.Axis;
+    xScale: Plottable.Scale.AbstractScale<any, any>;
+    yScale: Plottable.Scale.AbstractScale<any, any>;
+    colorScale: Plottable.Scale.AbstractScale<any, string>;
+    xAxis: Plottable.Axis.AbstractAxis;
+    yAxis: Plottable.Axis.AbstractAxis;
     xLabel?: Plottable.Component.AxisLabel;
     yLabel?: Plottable.Component.AxisLabel;
     titleLabel?: Plottable.Component.TitleLabel;
     legend?: Plottable.Component.HorizontalLegend;
-    plot?: Plottable.Abstract.NewStylePlot<any,any>; // if non NewStylePlot
-    plots?: Plottable.Abstract.Plot[]; // if NewStylePlot
+    plot?: Plottable.Plot.AbstractPlot; // if NewStylePlot
+    plots?: Plottable.Plot.AbstractPlot[]; // if non NewStylePlot
     table: Plottable.Component.Table;
   }
 
@@ -28,8 +28,8 @@ module Chartographer {
     private _yAccessor: any = "y"
     private datasets: Plottable.Dataset[];
 
-    private plots: Plottable.Abstract.XYPlot<any,any>[];
-    private plot: Plottable.Abstract.NewStylePlot<any,any>;
+    private plots: Plottable.Plot.AbstractXYPlot<any,any>[];
+    private plot: Plottable.Plot.AbstractPlot;
     private _xLabel: string;
     private _yLabel: string;
     private _titleLabel: string;
@@ -61,20 +61,20 @@ module Chartographer {
       this.getComponents().table.renderTo(svg);
     }
 
-    public _project(attr: string, accessor: any, scale?: Plottable.Abstract.Scale<any,any>) {
+    public _project(attr: string, accessor: any, scale?: Plottable.Scale.AbstractScale<any,any>) {
       if (this.isNewStylePlot) {
         this.plot.project(attr, accessor, scale);
       } else {
-        this.plots.forEach((p: Plottable.Abstract.Plot) => p.project(attr, accessor, scale));
+        this.plots.forEach((p: Plottable.Plot.AbstractPlot) => p.project(attr, accessor, scale));
       }
     }
 
-    public _generatePlots(x: Plottable.Abstract.Scale<any,number>, y: Plottable.Abstract.Scale<any,number>) {
+    public _generatePlots(x: Plottable.Scale.AbstractScale<any,number>, y: Plottable.Scale.AbstractScale<any,number>) {
       if (this.isNewStylePlot) {
         this.plot = new Plottable.Plot[this.plotType](x, y);
         this.datasets.forEach((d: Plottable.Dataset) => this.plot.addDataset(d.metadata()[nameKey], d));
       } else {
-        this.plots = this.datasets.map((d: Plottable.Dataset) => new Plottable.Plot[this.plotType](d, x, y));
+        this.plots = this.datasets.map((d: Plottable.Dataset) => new Plottable.Plot[this.plotType](x, y).addDataset(d));
       }
     }
 

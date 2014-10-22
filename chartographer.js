@@ -1,5 +1,5 @@
 /*!
-Chartographer 0.0.4 (https://github.com/danmane/chartogrpaher)
+Chartographer 0.0.5 (https://github.com/danmane/chartogrpaher)
 Copyright 2014 Palantir Technologies
 Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
 
@@ -80,7 +80,7 @@ var Chartographer;
                 this.datasets.forEach(function (d) { return _this.plot.addDataset(d.metadata()[nameKey], d); });
             }
             else {
-                this.plots = this.datasets.map(function (d) { return new Plottable.Plot[_this.plotType](d, x, y); });
+                this.plots = this.datasets.map(function (d) { return new Plottable.Plot[_this.plotType](x, y).addDataset(d); });
             }
         };
         Chart.prototype.setType = function (t, isX) {
