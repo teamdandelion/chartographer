@@ -1,0 +1,25 @@
+url                   : 'http://0.0.0.0:4000'
+timezone              : America/Los_Angeles
+exclude               :
+  - 'Gemfile'
+  - 'Gemfile.lock'
+  - 'README.md'
+  - 'Gruntfile.js'
+  - 'package.json'
+  - 'sass'
+  - 'node_modules'
+  - '/js'
+  - '/images'
+  - 'Procfile'
+  - '/*.ts'
+  - '/*.sh'
+  - '/*.json'
+  - '_typedoc'
+markdown              : kramdown
+company               : 'Palantir'
+title                 : 'Palantir'
+google_analytics      : ''
+baseurl               :
+plottable_version     : 0.29.0
+chartographer_version : 0.0.4
+minifiedSuffix        : '.min'

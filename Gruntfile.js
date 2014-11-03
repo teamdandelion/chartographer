@@ -43,6 +43,20 @@ module.exports = function(grunt) {
       header: {
         src: ["license_header.txt", "chartographer.js"],
         dest: "chartographer.js",
+      },
+      page: {
+        src: [
+          'js/jquery-1.11.1.js',
+          // include any bootstrap here
+          'js/bootstrap/transition.js',
+          'js/bootstrap/collapse.js',
+          'js/bootstrap/dropdown.js',
+          'js/bootstrap/tooltip.js',
+          'js/bootstrap/scrollspy.js',
+          // include our application.js
+          'js/application.js'
+        ],
+        dest: 'build/js/compiled.js'
       }
     },
     sed: {
@@ -89,6 +103,11 @@ module.exports = function(grunt) {
       "rebuild": {
         "tasks": ["dev-compile"],
         "files": ["chartographer.ts"]
+      },
+      "page": {
+        "files": ["js/*.js", "images/*", "*.html", "_sass/**/*.scss"],
+        "tasks": ["page"],
+        "options": { spawn: false }
       }
     },
     connect: {
@@ -107,6 +126,31 @@ module.exports = function(grunt) {
     uglify: {
       main: {
         files: {'chartographer.min.js': ['chartographer.js']}
+      },
+      page: {
+        options: {
+          mangle: { except: ['jQuery', 'Modernizr'] },
+        },
+        build: {
+          files: {
+            'build/js/respond-1.4.2.min.js'          : 'js/respond-1.4.2.js',
+            'build/js/modernizr-custom-2.8.2.min.js' : 'js/modernizr-custom-2.8.2.js',
+            'build/js/compiled.min.js'               : 'build/js/compiled.js'
+          }
+        }
+      }
+    },
+    compass: {
+      page: {
+        options: {
+          specify     : ['_sass/style.scss'],
+          sassDir     : '_sass',
+          cssDir      : 'build/css',
+          fontsDir    : 'fonts',
+          outputStyle : 'compressed',
+          imagesDir   : 'images',
+          bundleExec  : true
+        }
       }
     }
   };
@@ -142,4 +186,6 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask("launch", ["connect", "dev-compile", "watch"]);
+
+  grunt.registerTask("page", ["concat:page", "uglify:page", "compass:page"]);
 };

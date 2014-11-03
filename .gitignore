@@ -1,2 +1,5 @@
 .tscache/
 node_modules/
+_site
+.ruby-version
+.sass-cache

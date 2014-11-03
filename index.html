@@ -1,0 +1,156 @@
+---
+page_id: page-overview
+---
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" sizes="16x16 32x32" type="image/x-icon">
+  <title>Chartographer.js | Palantir</title>
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="{{ page.description }}">
+  <link rel="stylesheet" href="{{ site.baseurl }}/build/css/style.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/bower_components/plottable/plottable.css">
+  <script src="{{ site.baseurl }}/build/js/modernizr-custom-2.8.2.min.js"></script>
+  <script src="{{ site.baseurl }}/bower_components/d3/d3.min.js"></script>
+  <script src="{{ site.baseurl }}/bower_components/plottable/plottable.min.js"></script>
+
+  <!--[if lt IE 9]>
+  <script src="{{ site.baseurl }}/build/js/respond-1.4.2.min.js"></script>
+  <![endif]-->
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Home">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="//palantir.github.io/plottable/">
+  <meta property="og:site_name" content="Chartographer.js">
+  <meta property="og:description" content="{{ page.description }}">
+</head>
+<body id="page-index" data-spy="scroll" data-target=".navbar-page">
+  <aside id="main-navigation">
+    <nav>
+      <ul>
+        <li>
+          <a href="#section-chartographer">Chartographer</a>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Examples</a></li>
+            <li><a href="#">API</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-plottable">Plottable</a></li>
+        <li><a href="#section-d3">D3</a></li>
+      </ul>
+    </nav>
+    <footer><a href="http://www.palantir.com/">Palantir Technologies</a></footer>
+  </aside>
+
+  <main id="main-content">
+    <!-- SECTION: Chartographer -->
+    <section id="section-chartographer">
+      <header>
+        <h1>
+          Chartographer.JS
+          <small>Elegant charts made trivial!</small>
+        </h1>
+      </header>
+      <div id="content-chartographer">
+        {% highlight javascript %}
+// Generates a random trend
+function randomTrend(numPoints, scaleFactor) {
+  var y = Math.random() * scaleFactor;
+  return Array.apply(null, Array(numPoints)).map(function (v, i) {
+    y += (0.5 - Math.random()) * scaleFactor * 0.1;
+    return { x : i, y : y };
+  });
+}
+
+// Create a chart!
+new Chartographer.LineChart(randomTrend(50, 100))
+  .titleLabel('Otter Trends')
+  .xLabel('Number of Otters')
+  .yLabel('Otter Playfulness')
+  .renderTo('#chartographer-example-line');
+        {% endhighlight %}
+      </div>
+    </section>
+
+    <!-- SECTION: Plottable -->
+    <section id="section-plottable">
+      <header>
+        <h1>
+          Plottable.JS
+          <small>Elegant charts made trivial!</small>
+        </h1>
+      </header>
+      <div id="content-plottable">
+        {% highlight javascript %}
+// Generates a random trend
+function randomTrend(numPoints, scaleFactor) {
+  var y = Math.random() * scaleFactor;
+  return Array.apply(null, Array(numPoints)).map(function (v, i) {
+    y += (0.5 - Math.random()) * scaleFactor * 0.1;
+    return { x : i, y : y };
+  });
+}
+
+// Create a chart!
+new Chartographer.LineChart(randomTrend(50, 100))
+  .titleLabel('Otter Trends')
+  .xLabel('Number of Otters')
+  .yLabel('Otter Playfulness')
+  .renderTo('#chartographer-example-line');
+        {% endhighlight %}
+      </div>
+    </section>
+
+    <!-- SECTION: D3 -->
+    <section id="section-d3">
+      <header>
+        <h1>
+          Powered by D3
+          <small>Chartographer and Plottable have access the full power of D3</small>
+        </h1>
+      </header>
+      <div id="content-d3">
+        <p>Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. Duis tincidunt urna non pretium porta. Nam condimentum vitae ligula vel ornare. Phasellus at semper turpis. Nunc eu tellus tortor. Etiam at condimentum nisl, vitae sagittis orci. Donec id dignissim nunc. Donec elit ante, eleifend a dolor et, venenatis facilisis dolor. In feugiat orci odio, sed lacinia sem elementum quis. Aliquam consectetur, eros et vulputate euismod, nunc leo tempor lacus, ac rhoncus neque eros nec lacus. Cras lobortis.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    © 2014 <a href="https://palantir.com/" title="Palantir Technologies">Palantir Technologies</a>. <a href="https://github.com/palantir/plottable" title="Plottable on Github.">Plottable.js</a> is released under the <a href="https://github.com/palantir/plottable/blob/master/LICENSE">MIT license</a>.
+  </footer><!-- /footer -->
+
+  {% if site.google_analytics != '' %}
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', '{{ site.google_analytics }}', 'none');
+    ga('send', 'pageview');
+  </script>
+  {% endif %}
+
+  <script src="{{ site.baseurl }}/build/js/compiled.min.js"></script>
+
+  <script>
+    (function() {
+      var $window = $(window),
+          $document = $(document);
+
+      $(function() {
+
+      }); // ready
+    })(window, window.document);
+  </script>
+</body>
+</html>

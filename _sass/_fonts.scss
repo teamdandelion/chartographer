@@ -1,0 +1,67 @@
+// ---------------------------------------
+// Fonts: Define all @font-face fonts here
+// ---------------------------------------
+
+$font-weight-lighter: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 600;
+$font-weight-bold: 700;
+
+@font-face {
+  font-family: "Blender";
+  src: url('../../fonts/blenderpro/blenderpro-medium-webfont.eot');
+  src: url('../../fonts/blenderpro/blenderpro-medium-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/blenderpro/blenderpro-medium-webfont.woff') format('woff'),
+       url('../../fonts/blenderpro/blenderpro-medium-webfont.ttf') format('truetype');
+  font-weight: $font-weight-normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Blender";
+  src: url('../../fonts/blenderpro/blenderpro-bold-webfont.eot');
+  src: url('../../fonts/blenderpro/blenderpro-bold-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/blenderpro/blenderpro-bold-webfont.woff') format('woff'),
+       url('../../fonts/blenderpro/blenderpro-bold-webfont.ttf') format('truetype');
+  font-weight: $font-weight-bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cooper Hewitt";
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Book.eot');
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Book.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Book.woff') format('woff'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Book.ttf') format('truetype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Book.svg#svgFontName') format('svg');
+  font-weight: $font-weight-normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cooper Hewitt";
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Medium.eot');
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Medium.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Medium.woff') format('woff'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Medium.ttf') format('truetype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Medium.svg#svgFontName') format('svg');
+  font-weight: $font-weight-medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cooper Hewitt";
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Bold.eot');
+  src: url('../../fonts/cooperhewitt/CooperHewitt-Bold.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Bold.woff') format('woff'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Bold.ttf') format('truetype'),
+       url('../../fonts/cooperhewitt/CooperHewitt-Bold.svg#svgFontName') format('svg');
+  font-weight: $font-weight-bold;
+  font-style: normal;
+}
+
+
+/** Type Variables
+ -------------------------------------------------- */
+$font-headers: "Blender", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-body: "Cooper Hewitt", "Helvetica Neue", Helvetica, Arial, sans-serif;
