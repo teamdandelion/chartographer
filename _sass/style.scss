@@ -14,7 +14,7 @@
 $font-size-base: 15px;
 $line-height-base: 1.666667;
 $line-height-base-px: 23px;
-$brand-primary: $COLOR_BLACK1;
+$brand-primary: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
 $screen-md-min: 1024px;
 $transition-duration: 200ms;
 
@@ -37,3 +37,202 @@ $grid-float-breakpoint:     $screen-md-min;
 
 // Include style for syntax highlighting
 @import "syntax";
+
+
+/** Style
+ -------------------------------------------------- */
+body {
+  background-color: $COLOR_SECTION_D3_CONTENT_BACKGROUND;
+}
+
+aside#main-navigation {
+  position: relative;
+  float: left;
+  width: 260px;
+  min-height: 100%;
+  color: #30404D;
+  background-color: #202B33;
+  position: fixed;
+  @include box-sizing(border-box);
+  @include box-shadow(0px 0px 2px 0px rgba(0,0,0,0.50));
+  padding-top: 25px;
+
+  > nav {
+    padding-top: 180px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background-repeat: no-repeat;
+    background-position: 15px 0;
+    color: $COLOR_NAV_BACKGROUND;
+    font-family: $font-headers;
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+    @include util-rem(font-size, 20px);
+
+    .svg & {
+      background-image: url(../images/plottable-logo.svg);
+    }
+
+    .no-svg & {
+      background-image: url(../images/plottable-logo.png);
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      > li {
+        > a {
+          color: $COLOR_NAV_PRIMARY;
+        }
+
+        > ul {
+          margin-bottom: 10px;
+          @include util-rem(font-size, 15px);
+
+          > li a {
+            color: $COLOR_NAV_SECONDARY;
+          }
+        }
+      }
+    }
+  }
+
+  > footer {
+    position: absolute;
+    bottom: 20px;
+    text-indent: -9999px;
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 31px;
+    margin-left: 20px;
+
+    .svg & {
+      background-image: url(../images/palantir-logo.svg);
+    }
+
+    .no-svg & {
+      background-image: url(../images/palantir-logo.png);
+    }
+  }
+}
+
+main#main-content {
+  margin-left: 260px;
+  font-family: $font-body;
+  overflow: hidden;
+
+  section {
+    > header {
+      padding: 50px 60px;
+
+      > h1 {
+        margin: 0;
+        font-weight: $font-weight-bold;
+
+        small {
+          display: block;
+          text-transform: none;
+          @include util-rem(font-size, 20px);
+        }
+      }
+    }
+
+    div.content {
+      padding: 45px;
+    }
+
+
+    &#section-chartographer {
+      background-color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_BACKGROUND;
+      color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
+
+      > header > h1 {
+        small {
+          color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
+          margin-left: 4px;
+        }
+      }
+
+      .secondary {
+        color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_SECONDARY;
+      }
+
+      div.content {
+        color: $COLOR_SECTION_CHARTOGRAPHER_CONTENT_PRIMARY;
+        background-color: $COLOR_SECTION_CHARTOGRAPHER_CONTENT_BACKGROUND;
+      }
+    }
+
+    &#section-plottable {
+      background-color: $COLOR_SECTION_PLOTTABLE_HEADER_BACKGROUND;
+      color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
+
+      > header > h1 {
+        small {
+          color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
+          margin-left: 2px;
+        }
+      }
+
+      .secondary {
+        color: $COLOR_SECTION_PLOTTABLE_HEADER_SECONDARY;
+      }
+
+      div.content {
+        color: $COLOR_SECTION_PLOTTABLE_CONTENT_PRIMARY;
+        background-color: $COLOR_SECTION_PLOTTABLE_CONTENT_BACKGROUND;
+      }
+    }
+
+    &#section-d3 {
+      background-color: $COLOR_SECTION_D3_HEADER_BACKGROUND;
+      color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+
+      > header > h1 {
+        small {
+          color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+          margin-left: 2px;
+        }
+      }
+
+      .secondary {
+        text-indent: -9999px;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        display: inline-block;
+        width: 53px;
+
+        .svg & {
+          background-image: url(../images/d3-logo.svg);
+        }
+
+        .no-svg & {
+          background-image: url(../images/d3-logo.png);
+        }
+      }
+
+      div.content {
+        color: $COLOR_SECTION_D3_CONTENT_PRIMARY;
+        background-color: $COLOR_SECTION_D3_CONTENT_BACKGROUND;
+      }
+    }
+
+  }
+
+  footer {
+    padding: 0 60px 20px;
+    color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+    background-color: $COLOR_SECTION_D3_CONTENT_BACKGROUND;
+
+    a {
+      color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+}

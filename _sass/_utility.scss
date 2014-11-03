@@ -13,10 +13,10 @@
 // @author Greg Rickaby
 // @since 1.0
 //
-// Usage: @include rem($property, $values);
+// Usage: @include util-rem($property, $values);
 // Example Usage:
-//    @include rem(font-size, 16px);
-//    @include rem(margin, 0 24px 0 12px);
+//    @include util-rem(font-size, 16px);
+//    @include util-rem(margin, 0 24px 0 12px);
 //
 // Outputs:
 //    font-size: 16px;
@@ -30,7 +30,7 @@ $baseFontSize: 10; // Based on HTML reset html { font-size: 62.5%; }
   @return $n / ($n * 0 + 1);
 }
 
-@mixin rem($property, $values) {
+@mixin util-rem($property, $values) {
   $px : ();
   $rem: ();
 
@@ -71,7 +71,7 @@ $baseFontSize: 10; // Based on HTML reset html { font-size: 62.5%; }
   }
 }
 
-@function rem($value) {
+@function util-rem($value) {
   $root: $baseFontSize;
   $val: parseInt($value);
   $return: ();
@@ -87,32 +87,4 @@ $baseFontSize: 10; // Based on HTML reset html { font-size: 62.5%; }
 
 @mixin relative-line-height($line-height-px, $font-size-in-px) {
   line-height: $line-height-px/$font-size-in-px;
-}
-
-@mixin footer-push() {
-  margin-top: -$footer-height-xs;
-  background-color: transparent;
-
-  @media (min-width: $screen-sm-min) {
-    & {
-      margin-top: -$footer-height-sm;
-    }
-  }
-
-  @media (min-width: $screen-md-min) {
-    & {
-      margin-top: -$footer-height-md;
-    }
-  }
-
-  @media (min-width: $screen-lg-min) {
-    & {
-      margin-top: -$footer-height-lg;
-    }
-  }
-}
-
-@mixin fade-background() {
-  @include filter-gradient(#030000, #18191b, vertical);
-  @include background-image(linear-gradient(top, rgba(0,0,0,0.01) 0%, rgba(2,2,2,1) 8%, rgba(24,25,27,1) 100%));
 }

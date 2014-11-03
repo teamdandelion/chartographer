@@ -43,7 +43,15 @@ page_id: page-overview
             <li><a href="#">API</a></li>
           </ul>
         </li>
-        <li><a href="#section-plottable">Plottable</a></li>
+        <li>
+          <a href="#section-plottable">Plottable</a>
+          <ul>
+            <li><a href="http://plottablejs.org/docs/modules/plottable.html">API</a></li>
+            <li><a href="http://plottablejs.org/components/">Components</a></li>
+            <li><a href="http://plottablejs.org/tutorials/">Tutorials</a></li>
+            <li><a href="http://plottablejs.org/examples/">Examples</a></li>
+          </ul>
+        </li>
         <li><a href="#section-d3">D3</a></li>
       </ul>
     </nav>
@@ -55,12 +63,15 @@ page_id: page-overview
     <section id="section-chartographer">
       <header>
         <h1>
-          Chartographer.JS
+          Chartographer<span class="secondary">.JS</span>
           <small>Elegant charts made trivial!</small>
         </h1>
       </header>
-      <div id="content-chartographer">
-        {% highlight javascript %}
+      <div id="content-chartographer" class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+{% highlight javascript %}
 // Generates a random trend
 function randomTrend(numPoints, scaleFactor) {
   var y = Math.random() * scaleFactor;
@@ -72,24 +83,35 @@ function randomTrend(numPoints, scaleFactor) {
 
 // Create a chart!
 new Chartographer.LineChart(randomTrend(50, 100))
-  .titleLabel('Otter Trends')
-  .xLabel('Number of Otters')
-  .yLabel('Otter Playfulness')
-  .renderTo('#chartographer-example-line');
-        {% endhighlight %}
-      </div>
+                 .titleLabel('Otter Trends')
+                 .xLabel('Number of Otters')
+                 .yLabel('Otter Playfulness')
+                 .renderTo('#chartographer-example-line');
+{% endhighlight %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Chartographer is a simple declarative API for creating pretty charts on websites. It uses Plottable, a modular charting library, to create easy reusable charts. Since Plottable is built on D3, it implicitly uses D3 and SVG for rendering. CSS can be used for most styling (e.g. font sizes and gridline thickness) although color choice depends on API usage.</p>
+            </div>
+          </div>
+        </div><!-- /.content-fluid -->
+      </div><!-- /#content-chartographer -->
     </section>
 
     <!-- SECTION: Plottable -->
     <section id="section-plottable">
       <header>
         <h1>
-          Plottable.JS
-          <small>Elegant charts made trivial!</small>
+          Plottable<span class="secondary">.JS</span>
+          <small>Flexible, interactive charts for the web.</small>
         </h1>
       </header>
-      <div id="content-plottable">
-        {% highlight javascript %}
+      <div id="content-plottable" class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+              {% highlight javascript %}
 // Generates a random trend
 function randomTrend(numPoints, scaleFactor) {
   var y = Math.random() * scaleFactor;
@@ -101,11 +123,15 @@ function randomTrend(numPoints, scaleFactor) {
 
 // Create a chart!
 new Chartographer.LineChart(randomTrend(50, 100))
-  .titleLabel('Otter Trends')
-  .xLabel('Number of Otters')
-  .yLabel('Otter Playfulness')
-  .renderTo('#chartographer-example-line');
-        {% endhighlight %}
+                 .titleLabel('Otter Trends')
+                 .xLabel('Number of Otters')
+                 .yLabel('Otter Playfulness')
+                 .renderTo('#chartographer-example-line');
+              {% endhighlight %}
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -113,20 +139,26 @@ new Chartographer.LineChart(randomTrend(50, 100))
     <section id="section-d3">
       <header>
         <h1>
-          Powered by D3
+          Powered by <span class="secondary">D3</span>
           <small>Chartographer and Plottable have access the full power of D3</small>
         </h1>
       </header>
-      <div id="content-d3">
-        <p>Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. Duis tincidunt urna non pretium porta. Nam condimentum vitae ligula vel ornare. Phasellus at semper turpis. Nunc eu tellus tortor. Etiam at condimentum nisl, vitae sagittis orci. Donec id dignissim nunc. Donec elit ante, eleifend a dolor et, venenatis facilisis dolor. In feugiat orci odio, sed lacinia sem elementum quis. Aliquam consectetur, eros et vulputate euismod, nunc leo tempor lacus, ac rhoncus neque eros nec lacus. Cras lobortis.</p>
+      <div id="content-d3" class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Cras quis nulla commodo, aliquam lectus sed, blandit augue. Cras ullamcorper bibendum bibendum. Duis tincidunt urna non pretium porta. Nam condimentum vitae ligula vel ornare. Phasellus at semper turpis. Nunc eu tellus tortor. Etiam at condimentum nisl, vitae sagittis orci. Donec id dignissim nunc. Donec elit ante, eleifend a dolor et, venenatis facilisis dolor. In feugiat orci odio, sed lacinia sem elementum quis. Aliquam consectetur, eros et vulputate euismod, nunc leo tempor lacus, ac rhoncus neque eros nec lacus. Cras lobortis.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-  </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    © 2014 <a href="https://palantir.com/" title="Palantir Technologies">Palantir Technologies</a>. <a href="https://github.com/palantir/plottable" title="Plottable on Github.">Plottable.js</a> is released under the <a href="https://github.com/palantir/plottable/blob/master/LICENSE">MIT license</a>.
-  </footer><!-- /footer -->
+    <!-- Footer -->
+    <footer role="contentinfo">
+      © {{ site.time | date: '%Y' }} <a href="https://palantir.com/" title="Palantir Technologies">Palantir Technologies</a>. <a href="https://github.com/palantir/plottable" title="Plottable on Github.">Plottable.js</a> is released under the <a href="https://github.com/palantir/plottable/blob/master/LICENSE">MIT license</a>. <a href="http://d3js.org">D3</a> copyright {{ site.time | date: '%Y' }} Michael Bostock.
+    </footer><!-- /footer -->
+  </main>
 
   {% if site.google_analytics != '' %}
   <!-- Google Analytics -->

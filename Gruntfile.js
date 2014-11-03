@@ -131,12 +131,10 @@ module.exports = function(grunt) {
         options: {
           mangle: { except: ['jQuery', 'Modernizr'] },
         },
-        build: {
-          files: {
-            'build/js/respond-1.4.2.min.js'          : 'js/respond-1.4.2.js',
-            'build/js/modernizr-custom-2.8.2.min.js' : 'js/modernizr-custom-2.8.2.js',
-            'build/js/compiled.min.js'               : 'build/js/compiled.js'
-          }
+        files: {
+          'build/js/respond-1.4.2.min.js'          : ['js/respond-1.4.2.js'],
+          'build/js/modernizr-custom-2.8.2.min.js' : ['js/modernizr-custom-2.8.2.js'],
+          'build/js/compiled.min.js'               : ['build/js/compiled.js']
         }
       }
     },
