@@ -123,7 +123,9 @@ var Chartographer;
             var colorScale = new Plottable.Scale.Color();
             if (this.colorRange)
                 colorScale.range(this.colorRange);
-            var gridlines = new Plottable.Component.Gridlines(xScale, yScale);
+            var xScaleForGridlines = this._xType === "ordinal" ? null : xScale;
+            var yScaleForGridlines = this._yType === "ordinal" ? null : yScale;
+            var gridlines = new Plottable.Component.Gridlines(xScaleForGridlines, yScaleForGridlines);
             var legend = colorScale.domain().length > 1 ? new Plottable.Component.HorizontalLegend(colorScale) : null;
             this._generatePlots(xScale, yScale);
             this._project("x", this._xAccessor, xScale);
