@@ -47,11 +47,12 @@ module.exports = function(grunt) {
       page: {
         src: [
           'js/jquery-1.11.1.js',
+          'js/jquery.sticky-kit.js',
           // include any bootstrap here
           'js/bootstrap/transition.js',
           'js/bootstrap/collapse.js',
-          'js/bootstrap/dropdown.js',
-          'js/bootstrap/tooltip.js',
+          // 'js/bootstrap/dropdown.js',
+          // 'js/bootstrap/affix.js',
           'js/bootstrap/scrollspy.js',
           // include our application.js
           'js/application.js'

@@ -82,14 +82,33 @@ aside#main-navigation {
       margin: 0;
       padding: 0;
 
+      &.nav {
+        // disable default nav stuff
+        > li > a {
+          padding: 0;
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+
       > li {
+
+        &.active {
+          > ul {
+            display: block;
+          }
+        }
+
         > a {
           color: $COLOR_NAV_PRIMARY;
         }
 
         > ul {
-          margin-bottom: 10px;
+          display: none;
           @include util-rem(font-size, 15px);
+          margin-bottom: 10px;
 
           > li a {
             color: $COLOR_NAV_SECONDARY;
@@ -124,8 +143,15 @@ main#main-content {
   overflow: hidden;
 
   section {
+    position: relative;
+
     > header {
       padding: 50px 60px;
+
+      &.is_stuck {
+        top: 0;
+        z-index: 10;
+      }
 
       > h1 {
         margin: 0;
@@ -140,18 +166,21 @@ main#main-content {
     }
 
     div.content {
+      position: relative;
       padding: 45px;
+      z-index: 0;
     }
 
 
     &#section-chartographer {
-      background-color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_BACKGROUND;
-      color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
-
-      > header > h1 {
-        small {
-          color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
-          margin-left: 4px;
+      > header {
+        background-color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_BACKGROUND;
+        color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
+        > h1 {
+          small {
+            color: $COLOR_SECTION_CHARTOGRAPHER_HEADER_PRIMARY;
+            margin-left: 4px;
+          }
         }
       }
 
@@ -166,13 +195,15 @@ main#main-content {
     }
 
     &#section-plottable {
-      background-color: $COLOR_SECTION_PLOTTABLE_HEADER_BACKGROUND;
-      color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
+      > header {
+        background-color: $COLOR_SECTION_PLOTTABLE_HEADER_BACKGROUND;
+        color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
 
-      > header > h1 {
-        small {
-          color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
-          margin-left: 2px;
+        > h1 {
+          small {
+            color: $COLOR_SECTION_PLOTTABLE_HEADER_PRIMARY;
+            margin-left: 2px;
+          }
         }
       }
 
@@ -187,13 +218,14 @@ main#main-content {
     }
 
     &#section-d3 {
-      background-color: $COLOR_SECTION_D3_HEADER_BACKGROUND;
-      color: $COLOR_SECTION_D3_HEADER_PRIMARY;
-
-      > header > h1 {
-        small {
-          color: $COLOR_SECTION_D3_HEADER_PRIMARY;
-          margin-left: 2px;
+      > header {
+        background-color: $COLOR_SECTION_D3_HEADER_BACKGROUND;
+        color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+        > h1 {
+          small {
+            color: $COLOR_SECTION_D3_HEADER_PRIMARY;
+            margin-left: 2px;
+          }
         }
       }
 

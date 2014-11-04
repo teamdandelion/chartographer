@@ -1,5 +1,5 @@
 /*!
- * application.js - Plottable.
+ * application.js - Chartographer.
  * Takashi Okamoto <tokamoto@palantir.com>
  *
  * Copyright 2014 Palantir Technologies.
@@ -15,54 +15,20 @@ Modernizr.addTest('retina', function() {
 
 (function(window, document, undefined) {
   'use strict';
-  var $window = $(window)
-
-  // vertical pager
-  var VerticalPager = function($sections) {
-    this.$sections = $sections;
-    this.$currentSection = null;
-    this.isPaging = false;
-    this.pageDelay = 100;
-  };
-  VerticalPager.prototype = {
-
-    init: function() {
-      if (typeof this.initialized === 'undefined') {
-        this.initialized = true;
-        this.$currentSection = this.getCurrentSection();
-        this.$lastSection = this.$sections.last();
-      } else {
-        console.log('Already initialized VerticalPager.');
-      }
-    },
-
-    gotoSection: function($section) {
-      if ($section != this.$currentSection && !this.isPaging) {
-        this.isPaging = true;
-        $('html body').animate({ scrollTop: $section.offset().top }, $.proxy(function() {
-          window.setTimeout($.proxy(function() {
-            this.isPaging = false;
-          }, this), this.pageDelay);
-          this.$currentSection = $section;
-        }, this));
-      }
-    },
-
-    getCurrentSection: function() {
-      for (var i = 0, len = this.$sections.length; i < len; ++i) {
-        var elem = this.$sections.get(i),
-            $elem = $(elem);
-        if ($window.scrollTop() <= $elem.offset().top) {
-          return $elem;
-        }
-      }
-      return null;
-    }
-  };
-  window.VerticalPager = VerticalPager;
-
+  var $window = $(window);
 
   $(function() {
-    $('[data-toggle="tooltip"]').tooltip();
+    $("#main-navigation ul.nav > li a[href^='#']").on('click', function(event) {
+       event.preventDefault();
+       var hash = this.hash;
+       // animate
+       $('html, body').animate({
+         scrollTop: $(this.hash).offset().top
+       }, 200, function() {
+         window.location.hash = hash;
+       });
+    });
+
+    $("main#main-content > section > header").stick_in_parent();
   });
 })(window, window.document);
