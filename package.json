@@ -1,6 +1,6 @@
 {
   "name": "chartographer.js",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A library of simple charts made with Plottable and D3",
   "repository": {
     "type": "git",
