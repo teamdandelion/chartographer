@@ -121,19 +121,23 @@ aside#main-navigation {
   > footer {
     position: absolute;
     bottom: 20px;
-    text-indent: -9999px;
-    background-repeat: no-repeat;
-    width: 120px;
-    height: 31px;
     margin-left: 20px;
 
-    .svg & {
-      background-image: url(../images/palantir-logo.svg);
+    a {
+      display: block;
+      width: 120px;
+      height: 31px;
+      text-indent: -9999px;
+      background-repeat: no-repeat;
+      .svg & {
+        background-image: url(../images/palantir-logo.svg);
+      }
+
+      .no-svg & {
+        background-image: url(../images/palantir-logo.png);
+      }
     }
 
-    .no-svg & {
-      background-image: url(../images/palantir-logo.png);
-    }
   }
 }
 
@@ -170,7 +174,6 @@ main#main-content {
       padding: 45px;
       z-index: 0;
     }
-
 
     &#section-chartographer {
       > header {
@@ -264,6 +267,13 @@ main#main-content {
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+
+  div.highlight {
+    pre {
+      border: none;
+      @include util-rem(font-size, 12px);
     }
   }
 

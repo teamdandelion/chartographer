@@ -19,6 +19,7 @@ page_id: page-overview
   <script src="{{ site.baseurl }}/build/js/modernizr-custom-2.8.2.min.js"></script>
   <script src="{{ site.baseurl }}/bower_components/d3/d3.min.js"></script>
   <script src="{{ site.baseurl }}/bower_components/plottable/plottable.min.js"></script>
+  <script src="{{ site.baseurl }}/chartographer.js"></script>
 
   <!--[if lt IE 9]>
   <script src="{{ site.baseurl }}/build/js/respond-1.4.2.min.js"></script>
@@ -71,6 +72,16 @@ page_id: page-overview
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-8">
+              <p>Chartographer is a simple declarative API for creating pretty charts on websites. It uses Plottable, a modular charting library, to create easy reusable charts. Since Plottable is built on D3, it implicitly uses D3 and SVG for rendering. CSS can be used for most styling (e.g. font sizes and gridline thickness) although color choice depends on API usage.</p>
+            </div>
+          </div>
+
+          <h3>Examples</h3>
+          <div class="row">
+            <div class="example-block col-md-6">
+              <svg id="line1" width="80%" height="200"></svg>
+            </div>
+            <div class="col-md-6">
 {% highlight javascript %}
 // Generates a random trend
 function randomTrend(numPoints, scaleFactor) {
@@ -91,10 +102,78 @@ new Chartographer.LineChart(randomTrend(50, 100))
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-8">
-              <p>Chartographer is a simple declarative API for creating pretty charts on websites. It uses Plottable, a modular charting library, to create easy reusable charts. Since Plottable is built on D3, it implicitly uses D3 and SVG for rendering. CSS can be used for most styling (e.g. font sizes and gridline thickness) although color choice depends on API usage.</p>
+            <div class="example-block col-md-6">
+              <svg id="line2" width="80%" height="200"></svg>
+            </div>
+            <div class="col-md-6">
+{% highlight javascript %}
+// Generates a random trend
+function randomTrend(numPoints, scaleFactor) {
+  var y = Math.random() * scaleFactor;
+  return Array.apply(null, Array(numPoints)).map(function (v, i) {
+    y += (0.5 - Math.random()) * scaleFactor * 0.1;
+    return { x : i, y : y };
+  });
+}
+
+// Create a chart!
+new Chartographer.LineChart(randomTrend(50, 100))
+                 .titleLabel('Otter Trends')
+                 .xLabel('Number of Otters')
+                 .yLabel('Otter Playfulness')
+                 .renderTo('#chartographer-example-line');
+{% endhighlight %}
             </div>
           </div>
+          <div class="row">
+            <div class="example-block col-md-6">
+              <svg id="line3" width="80%" height="200"></svg>
+            </div>
+            <div class="col-md-6">
+{% highlight javascript %}
+// Generates a random trend
+function randomTrend(numPoints, scaleFactor) {
+  var y = Math.random() * scaleFactor;
+  return Array.apply(null, Array(numPoints)).map(function (v, i) {
+    y += (0.5 - Math.random()) * scaleFactor * 0.1;
+    return { x : i, y : y };
+  });
+}
+
+// Create a chart!
+new Chartographer.LineChart(randomTrend(50, 100))
+                 .titleLabel('Otter Trends')
+                 .xLabel('Number of Otters')
+                 .yLabel('Otter Playfulness')
+                 .renderTo('#chartographer-example-line');
+{% endhighlight %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="example-block col-md-6">
+              <svg id="line4" width="80%" height="200"></svg>
+            </div>
+            <div class="col-md-6">
+{% highlight javascript %}
+// Generates a random trend
+function randomTrend(numPoints, scaleFactor) {
+  var y = Math.random() * scaleFactor;
+  return Array.apply(null, Array(numPoints)).map(function (v, i) {
+    y += (0.5 - Math.random()) * scaleFactor * 0.1;
+    return { x : i, y : y };
+  });
+}
+
+// Create a chart!
+new Chartographer.LineChart(randomTrend(50, 100))
+                 .titleLabel('Otter Trends')
+                 .xLabel('Number of Otters')
+                 .yLabel('Otter Playfulness')
+                 .renderTo('#chartographer-example-line');
+{% endhighlight %}
+            </div>
+          </div>
+
         </div><!-- /.content-fluid -->
       </div><!-- /#content-chartographer -->
     </section>
@@ -179,8 +258,34 @@ new Chartographer.LineChart(randomTrend(50, 100))
       var $window = $(window),
           $document = $(document);
 
-      $(function() {
+      function makeRandomData(numPoints, scaleFactor) {
+        "use strict";
+        if (typeof scaleFactor === "undefined") { scaleFactor = 1; }
+        var data = [];
+        for (var i = 0; i < numPoints; i++) {
+          var x = Math.random();
+          var r = { x: x, y: (x + x * Math.random()) * scaleFactor };
+          data.push(r);
+        }
+        data.sort(function (a, b) {
+          return a.x - b.x;
+        });
+        return data;
+      }
 
+      $(function() {
+        var data = makeRandomData(50);
+        new Chartographer.LineChart(data).titleLabel("foo chart").xLabel("foo").yLabel("bar").renderTo("#line1");
+        var hugeData = makeRandomData(50, 100000);
+        new Chartographer.LineChart(hugeData).titleLabel("foo chart").xLabel("foo").yLabel("bar").xType("log").renderTo("#line2");
+        var multiData = {
+          foo: makeRandomData(50),
+          bar: makeRandomData(50, 1.5),
+          baz: makeRandomData(50, 2)
+        };
+        new Chartographer.LineChart(multiData).titleLabel("multi chart").xLabel("foo").yLabel("bar").renderTo("#line3");
+        var strangeData = [{x: "foo", y: 5}, {x: "bar", y:6}, {x: "baz", y:7}, {x: "bar", y:9}];
+        new Chartographer.LineChart(strangeData).titleLabel("strange chart").xLabel("foo").yLabel("bar").renderTo("#line4");
       }); // ready
     })(window, window.document);
   </script>
