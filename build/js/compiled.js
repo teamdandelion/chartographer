@@ -10920,8 +10920,8 @@ Modernizr.addTest('retina', function() {
     });
 
     $("main#main-content > section > header").stick_in_parent();
-    $("div.example-block").stick_in_parent({
-      offset_top: 190
-    });
+    // $("div.example-block").stick_in_parent({
+    //   offset_top: 190
+    // });
   });
 })(window, window.document);

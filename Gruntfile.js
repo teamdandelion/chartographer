@@ -46,16 +46,16 @@ module.exports = function(grunt) {
       },
       page: {
         src: [
-          'js/jquery-1.11.1.js',
-          'js/jquery.sticky-kit.js',
+          '_js/jquery-1.11.1.js',
+          '_js/jquery.sticky-kit.js',
           // include any bootstrap here
-          'js/bootstrap/transition.js',
-          'js/bootstrap/collapse.js',
-          // 'js/bootstrap/dropdown.js',
-          // 'js/bootstrap/affix.js',
-          'js/bootstrap/scrollspy.js',
+          '_js/bootstrap/transition.js',
+          '_js/bootstrap/collapse.js',
+          // '_js/bootstrap/dropdown.js',
+          // '_js/bootstrap/affix.js',
+          '_js/bootstrap/scrollspy.js',
           // include our application.js
-          'js/application.js'
+          '_js/application.js'
         ],
         dest: 'build/js/compiled.js'
       }
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
         "files": ["chartographer.ts"]
       },
       "page": {
-        "files": ["js/*.js", "images/*", "*.html", "_sass/**/*.scss"],
+        "files": ["_js/**/*.js", "images/**/*", "*.html", "_sass/**/*.scss"],
         "tasks": ["page"],
         "options": { spawn: false }
       }
@@ -133,8 +133,8 @@ module.exports = function(grunt) {
           mangle: { except: ['jQuery', 'Modernizr'] },
         },
         files: {
-          'build/js/respond-1.4.2.min.js'          : ['js/respond-1.4.2.js'],
-          'build/js/modernizr-custom-2.8.2.min.js' : ['js/modernizr-custom-2.8.2.js'],
+          'build/js/respond-1.4.2.min.js'          : ['_js/respond-1.4.2.js'],
+          'build/js/modernizr-custom-2.8.2.min.js' : ['_js/modernizr-custom-2.8.2.js'],
           'build/js/compiled.min.js'               : ['build/js/compiled.js']
         }
       }

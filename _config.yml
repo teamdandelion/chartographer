@@ -8,8 +8,6 @@ exclude               :
   - 'package.json'
   - 'sass'
   - 'node_modules'
-  - '/js'
-  - '/images'
   - 'Procfile'
   - '/*.ts'
   - '/*.sh'

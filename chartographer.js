@@ -1,15 +1,3 @@
-/*!
-Chartographer 0.0.5 (https://github.com/danmane/chartogrpaher)
-Copyright 2014 Palantir Technologies
-Licensed under MIT (https://github.com/danmane/chartographer/blob/master/LICENSE)
-
-          ************************************************
-          **          Looking for readable source?      **
-          **    Check out the .ts (typescript) file!    **
-          ************************************************
-
-*/
-
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -19,6 +7,7 @@ var __extends = this.__extends || function (d, b) {
 var Chartographer;
 (function (Chartographer) {
     var Chart = (function () {
+        // Chartographer deploys by rendering, or providing its pieces.
         function Chart(datasets, spec) {
             this._xAccessor = "x";
             this._yAccessor = "y";
@@ -30,10 +19,12 @@ var Chartographer;
             datasets = d3.entries(datasets);
             this.datasets = datasets.map(function (kv) { return makeDataset(kv.key, kv.value); });
         }
+        /* Manually set the xType for the data: "Linear" || "Log" || "Ordinal" || "Time" */
         Chart.prototype.xType = function (t) {
             this._xType = this.setType(t, true);
             return this;
         };
+        /* Manually set the yType for the data: "Linear" || "Log" || "Ordinal" || "Time" */
         Chart.prototype.yType = function (t) {
             this._yType = this.setType(t, false);
             return this;
@@ -108,6 +99,7 @@ var Chartographer;
             throw new Error("Unrecognized data type");
         };
         Chart.prototype.modifyDataForNewStylePlot = function () {
+            // This code will disappear once NewStylePlots are universally supported in Plottable
             this.datasets.forEach(function (dataset) {
                 var key = dataset.metadata()[nameKey];
                 dataset.data().forEach(function (v) { return v[nameKey] = key; });
