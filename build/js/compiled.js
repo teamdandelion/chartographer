@@ -10907,21 +10907,31 @@ Modernizr.addTest('retina', function() {
   'use strict';
   var $window = $(window);
 
+  function animateToHash(hash) {
+    // animate
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 200, function() {
+      window.location.hash = hash;
+    });
+  }
+
   $(function() {
     $("#main-navigation ul.nav > li a[href^='#']").on('click', function(event) {
        event.preventDefault();
-       var hash = this.hash;
-       // animate
-       $('html, body').animate({
-         scrollTop: $(this.hash).offset().top
-       }, 200, function() {
-         window.location.hash = hash;
-       });
+       animateToHash(this.hash);
     });
 
     $("main#main-content > section > header").stick_in_parent();
     // $("div.example-block").stick_in_parent({
     //   offset_top: 190
     // });
+
+    // move to hash
+    if (window.location.hash) {
+      window.setTimeout(function() {
+        animateToHash(window.location.hash)
+      }, 10);
+    }
   });
 })(window, window.document);
